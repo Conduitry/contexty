@@ -1,0 +1,29 @@
+{
+	"name": "contexty",
+	"version": "0.0.1",
+	"description": "Asynchronous \"thread-local context\" for Node.js, using async_hooks",
+	"main": "./dist/index.cjs.js",
+	"module": "./dist/index.es.js",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "rollup -c",
+		"lint": "eslint src rollup.config.js",
+		"format": "prettier --write --use-tabs --no-semi --single-quote --trailing-comma es5 \"src/**/*.js\" \"*.js\""
+	},
+	"devDependencies": {
+		"eslint": "^4.1.0",
+		"prettier": "^1.4.4",
+		"rollup": "^0.43.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Conduitry/contexty.git"
+	},
+	"author": "Conduitry",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/Conduitry/contexty/issues"
+	}
+}
