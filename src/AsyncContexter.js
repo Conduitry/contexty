@@ -1,25 +1,32 @@
 import { createHook, executionAsyncId } from 'async_hooks'
 
-let asyncContexters = new Set()
+let asyncContexters = new Map()
 
 createHook({
 	init(asyncId, type, triggerAsyncId) {
-		asyncContexters.forEach(asyncContexter => asyncContexter._contexts.set(asyncId, asyncContexter._contexts.get(triggerAsyncId)))
+		for (let contexts of asyncContexters.values()) {
+			contexts.set(asyncId, contexts.get(triggerAsyncId))
+		}
 	},
 	destroy(asyncId) {
-		asyncContexters.forEach(asyncContexter => asyncContexter._contexts.delete(asyncId))
+		for (let contexts of asyncContexters.values()) {
+			contexts.delete(asyncId)
+		}
 	},
 }).enable()
 
 export default class AsyncContexter {
 	constructor() {
-		this._contexts = new Map()
-		asyncContexters.add(this)
+		asyncContexters.set(this, new Map())
 	}
 	new() {
-		this._contexts.set(executionAsyncId(), Object.create(this._contexts.get(executionAsyncId()) || null))
+		let asyncId = executionAsyncId()
+		let contexts = asyncContexters.get(this)
+		let context = Object.create(contexts.get(asyncId) || null)
+		contexts.set(asyncId, context)
+		return context
 	}
-	get context() {
-		return this._contexts.get(executionAsyncId())
+	get current() {
+		return asyncContexters.get(this).get(executionAsyncId())
 	}
 }
