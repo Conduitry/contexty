@@ -12,11 +12,11 @@ A current nightly Node.js build, for now. My understanding is that the `async_ho
 
 Create an instance of `AsyncContexter` to create a "namespace" in which you want to share contexts. You should use the same `AsyncContexter` anywhere you want to have access to the same context. In many applications, you will only need a single `AsyncContexter` instance, which should be created *outside* your code which handles requests etc.
 
-`let asyncContexter = new AsyncContexter()`
+`let contexter = new AsyncContexter()`
 
-When you want to create a new context, retrieve `asyncContexter.new`. This is a getter which returns a new context (an object with `null` prototype). Store whatever you want on here. Later in the same or in a descendent asynchronous resource, the `asyncContexter.current` getter will be that same context object.
+When you want to create a new context, retrieve `contexter.new`. This is a getter which returns a new context (an object with `null` prototype). Store whatever you want on here. Later in the same or in a descendent asynchronous resource, the `contexter.current` getter will return that same context object.
 
-Retrieving `asyncContexter.new` when there is already an asynchronous context will create a new context with the old one as its prototype, so you have access to all the parent values, but new values you add to the context will not affect the parent context.
+Retrieving `contexter.new` when there is already an asynchronous context will create a new context with the old one as its prototype, so you have access to all the parent values, but new values you add to the context will not affect the parent context.
 
 ## API
 
