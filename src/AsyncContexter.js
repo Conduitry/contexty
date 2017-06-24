@@ -19,7 +19,7 @@ export default class AsyncContexter {
 	constructor() {
 		asyncContexters.set(this, new Map())
 	}
-	new() {
+	get new() {
 		let asyncId = executionAsyncId()
 		let contexts = asyncContexters.get(this)
 		let context = Object.create(contexts.get(asyncId) || null)
