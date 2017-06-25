@@ -16,9 +16,9 @@ Create an instance of `Contexty` to create a "namespace" in which you want to sh
 
 `let contexty = new Contexty()`
 
-When you want to create a new context, retrieve `contexty.new`. This is a getter which returns a new context (an object with `null` prototype). Store whatever you want on here. Later in the same or in a descendent asynchronous resource, the `contexty.current` getter will return that same context object.
+When you want to create a new context, retrieve `contexty.create`. This is a getter which returns a new context (an object with `null` prototype). Store whatever you want on here. Later in the same or in a descendent asynchronous resource, the `contexty.context` getter will return that same context object.
 
-Retrieving `contexty.new` when there is already an asynchronous context will create a new context with the old one as its prototype, so you have access to all the parent values, but new values you add to the context will not affect the parent context.
+Retrieving `contexty.create` when there is already an asynchronous context will create a new context with the old one as its prototype, so you have access to all the parent values, but new values you add to the context will not affect the parent context.
 
 ## API
 
@@ -26,13 +26,13 @@ Retrieving `contexty.new` when there is already an asynchronous context will cre
 
 Creates a new object to manage async contexts for a particular purpose.
 
-### `Contexty#new`
+### `Contexty#create`
 
 This getter creates and returns a new context. If a context already existed, the new context will be a child context. You can access values stored on the parent context, and any changes will no longer be accessible once you are out of this asynchronous call tree.
 
-### `Contexty#current`
+### `Contexty#context`
 
-This getter retrieves the context created by the appropriate asynchronously ancestral `Contexty#new`.
+This getter retrieves the context created by the appropriate asynchronously ancestral `Contexty#create`.
 
 ## Example
 
@@ -44,21 +44,21 @@ let contexty = new Contexty()
 let counter = 0
 
 async function test() {
-	contexty.new.foo = ++counter
-	console.log('A', contexty.current.foo)
+	contexty.create.foo = ++counter
+	console.log('A', contexty.context.foo)
 	await sleep(1000)
-	console.log('B', contexty.current.foo)
+	console.log('B', contexty.context.foo)
 	setTimeout(test2, 2000)
 	await sleep(4000)
-	console.log('C', contexty.current.foo)
+	console.log('C', contexty.context.foo)
 }
 
 function test2() {
-	console.log('D', contexty.current.foo)
-	contexty.new.foo = 'x'
-	console.log('E', contexty.current.foo)
+	console.log('D', contexty.context.foo)
+	contexty.create.foo = 'x'
+	console.log('E', contexty.context.foo)
 	sleep(1000).then(() => {
-		console.log('F', contexty.current.foo)
+		console.log('F', contexty.context.foo)
 	})
 }
 
