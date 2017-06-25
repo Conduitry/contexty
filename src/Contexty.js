@@ -5,18 +5,7 @@ let contexties = new Map()
 export default class Contexty {
 	constructor() {
 		if (contexties.size === 0) {
-			createHook({
-				init(asyncId, type, triggerAsyncId) {
-					for (let contexts of contexties.values()) {
-						contexts.set(asyncId, contexts.get(triggerAsyncId))
-					}
-				},
-				destroy(asyncId) {
-					for (let contexts of contexties.values()) {
-						contexts.delete(asyncId)
-					}
-				},
-			}).enable()
+			enableHook()
 		}
 		contexties.set(this, new Map())
 	}
@@ -30,4 +19,19 @@ export default class Contexty {
 	get context() {
 		return contexties.get(this).get(executionAsyncId())
 	}
+}
+
+function enableHook() {
+	createHook({
+		init(asyncId, type, triggerAsyncId) {
+			for (let contexts of contexties.values()) {
+				contexts.set(asyncId, contexts.get(triggerAsyncId))
+			}
+		},
+		destroy(asyncId) {
+			for (let contexts of contexties.values()) {
+				contexts.delete(asyncId)
+			}
+		},
+	}).enable()
 }
