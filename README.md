@@ -2,7 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/contexty.svg?style=flat-square)](https://www.npmjs.com/package/contexty)
 
-**Contexty** is a very simple implementation of a "thread-local context"-esque concept for Node.js, based on asynchronous resources.
+**Contexty** is a very simple implementation of a "thread-local storage"-esque concept for Node.js, based on asynchronous resources.
 
 For example: Early in handling an HTTP request, you can create a new context. Elsewhere in your code, you can retrieve the current context and get/set values on it. The context is preserved for the duration of that HTTP request, but is kept separate for different HTTP requests.
 
