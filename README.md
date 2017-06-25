@@ -38,28 +38,33 @@ This getter retrieves the context created by the appropriate asynchronously ance
 
 ```javascript
 let { Contexty } = require('contexty')
-
 let contexty = new Contexty()
+
+let EventEmitter = require('events')
+let eventEmitter = new EventEmitter()
+
+eventEmitter.on('foo', () => console.log('On event: ' + contexty.context.foo))
 
 let counter = 0
 
 async function test() {
 	contexty.create.foo = ++counter
-	console.log('A', contexty.context.foo)
+	console.log('Immediately: ' + contexty.context.foo)
 	await sleep(1000)
-	console.log('B', contexty.context.foo)
+	console.log('After await: ' + contexty.context.foo)
+	sleep(1000).then(() => {
+		console.log('After .then()ed promise: ' + contexty.context.foo)
+	})
 	setTimeout(test2, 2000)
-	await sleep(4000)
-	console.log('C', contexty.context.foo)
+	await sleep(3000)
+	console.log('Back in original context: ' + contexty.context.foo)
+	eventEmitter.emit('foo')
 }
 
 function test2() {
-	console.log('D', contexty.context.foo)
+	console.log('After timeout: ' + contexty.context.foo)
 	contexty.create.foo = 'x'
-	console.log('E', contexty.context.foo)
-	sleep(1000).then(() => {
-		console.log('F', contexty.context.foo)
-	})
+	console.log('After creating child context: ' + contexty.context.foo)
 }
 
 for (let i = 0; i < 3; i++) {
@@ -74,24 +79,27 @@ function sleep(ms) {
 Output:
 
 ```
-A 1
-A 2
-A 3
-B 1
-B 2
-B 3
-D 1
-E x
-D 2
-E x
-D 3
-E x
-F x
-F x
-F x
-C 1
-C 2
-C 3
+Immediately: 1
+Immediately: 2
+Immediately: 3
+After await: 1
+After await: 2
+After await: 3
+After .then()ed promise: 1
+After .then()ed promise: 2
+After .then()ed promise: 3
+After timeout: 1
+After creating child context: x
+After timeout: 2
+After creating child context: x
+After timeout: 3
+After creating child context: x
+Back in original context: 1
+On event: 1
+Back in original context: 2
+On event: 2
+Back in original context: 3
+On event: 3
 ```
 
 ## License
