@@ -2,9 +2,9 @@
 
 [![npm version](https://img.shields.io/npm/v/contexty.svg?style=flat-square)](https://www.npmjs.com/package/contexty)
 
-**Contexty** is a very simple implementation of a "thread-local storage"-esque concept for Node.js, based on asynchronous resources.
+**Contexty** is a very simple implementation of a "thread-local storage"-esque concept for Node.js, based on asynchronous resources and `async_hooks`.
 
-For example: Early in handling an HTTP request, you can create a new context. Elsewhere in your code, you can retrieve the current context and get/set values on it. The context is preserved for the duration of that HTTP request, but is kept separate for different HTTP requests.
+Typical usage and motivation: At the beginning of handling an HTTP request, you can create a new context. Elsewhere in your code, you can retrieve the current context and get/set values on it. The context is preserved for the duration of that HTTP request, but is kept separate for different HTTP requests.
 
 ## Requirements
 
@@ -12,11 +12,11 @@ A current nightly Node.js build, for now. My understanding is that the `async_ho
 
 ## Usage
 
-Create an instance of `Contexty` to create a "namespace" in which you want to share contexts. You should use the same `Contexty` anywhere you want to have access to the same context. In many applications, you will only need a single `Contexty` instance, which should be created *outside* your code which handles requests etc.
+Create an instance of `Contexty` to create a "context space" in which you want to share contexts. You should use the same `Contexty` anywhere you want to have access to the same context. In many applications, you will only need a single `Contexty` instance, which should be created *outside* the code is called asynchronously for each request/whatever.
 
 `let contexty = new Contexty()`
 
-When you want to create a new context, retrieve `contexty.create`. This is a getter which returns a new context (an object with `null` prototype). Store whatever you want on here. Later in the same or in a descendent asynchronous resource, the `contexty.context` getter will return that same context object.
+When you want to create a new context, retrieve `contexty.create`. This is a getter which returns a new context (an object with `null` prototype). Store whatever you want on here. Later in the same or in a descendent asynchronous call, the `contexty.context` getter will return that same context object.
 
 Retrieving `contexty.create` when there is already an asynchronous context will create a new context with the old one as its prototype, so you have access to all the parent values, but new values you add to the context will not affect the parent context.
 
@@ -28,11 +28,11 @@ Creates a new object to manage async contexts for a particular purpose.
 
 ### `Contexty#create`
 
-This getter creates and returns a new context. If a context already existed, the new context will be a child context. You can access values stored on the parent context, and any changes will no longer be accessible once you are out of this asynchronous call tree.
+This getter creates and returns a new context. If a context already exists, the new context will be a child context. You can access values stored on the parent context, and any changes will no longer be accessible once you are out of this asynchronous call tree.
 
 ### `Contexty#context`
 
-This getter retrieves the context created by the appropriate asynchronously ancestral `Contexty#create`.
+This getter retrieves the context created by the appropriate ancestor `Contexty#create`.
 
 ## Example
 
@@ -42,7 +42,6 @@ let contexty = new Contexty()
 
 let EventEmitter = require('events')
 let eventEmitter = new EventEmitter()
-
 eventEmitter.on('foo', () => console.log('On event: ' + contexty.context.foo))
 
 let counter = 0
