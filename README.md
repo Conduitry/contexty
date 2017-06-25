@@ -57,6 +57,7 @@ async function test() {
 	setTimeout(test2, 2000)
 	await sleep(3000)
 	console.log('Back in original context: ' + contexty.context.foo)
+	await sleep(1000)
 	eventEmitter.emit('foo')
 }
 
@@ -94,10 +95,10 @@ After creating child context: x
 After timeout: 3
 After creating child context: x
 Back in original context: 1
-On event: 1
 Back in original context: 2
-On event: 2
 Back in original context: 3
+On event: 1
+On event: 2
 On event: 3
 ```
 
