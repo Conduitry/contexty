@@ -9,7 +9,7 @@ export default class Contexty {
 		}
 		contexties.set(this, new Map())
 	}
-	get create() {
+	create() {
 		let asyncId = executionAsyncId()
 		let contexts = contexties.get(this)
 		let context = Object.create(contexts.get(asyncId) || null)

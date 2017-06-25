@@ -16,23 +16,23 @@ Create an instance of `Contexty` to create a "context space" in which you want t
 
 `let contexty = new Contexty()`
 
-When you want to create a new context, retrieve `contexty.create`. This is a getter which returns a new context (an object with `null` prototype). Store whatever you want on here. Later in the same or in a descendent asynchronous call, the `contexty.context` getter will return that same context object.
+When you want to create a new context, call `contexty.create()`. This returns a new context (an object with `null` prototype). Store whatever you want on here. Later in the same or in a descendent asynchronous call, the `contexty.context` getter will return that same context object.
 
-Retrieving `contexty.create` when there is already an asynchronous context will create a new context with the old one as its prototype, so you have access to all the parent values, but new values you add to the context will not affect the parent context.
+Calling `contexty.create()` when there is already an asynchronous context will create a new context with the old one as its prototype, so you have access to all the parent values, but new values you add to the context will not affect the parent context.
 
 ## API
 
 ### `new Contexty()`
 
-Creates a new object to manage async contexts for a particular purpose.
+Creates a new object to manage asynchronous contexts for a particular purpose.
 
-### `Contexty#create`
+### `Contexty#create()`
 
-This getter creates and returns a new context. If a context already exists, the new context will be a child context. You can access values stored on the parent context, and any changes will no longer be accessible once you are out of this asynchronous call tree.
+Creates and returns a new context. If a context already exists, the new context will be a child context. You can access values stored on the parent context, and any changes will no longer be accessible once you are out of this asynchronous call tree.
 
 ### `Contexty#context`
 
-This getter retrieves the context created by the appropriate ancestor `Contexty#create`.
+The context created by the appropriate ancestor `Contexty#create`.
 
 ## Example
 
@@ -47,7 +47,7 @@ eventEmitter.on('foo', () => console.log('On event: ' + contexty.context.foo))
 let counter = 0
 
 async function test() {
-	contexty.create.foo = ++counter
+	contexty.create().foo = ++counter
 	console.log('Immediately: ' + contexty.context.foo)
 	await sleep(1000)
 	console.log('After await: ' + contexty.context.foo)
@@ -63,7 +63,7 @@ async function test() {
 
 function test2() {
 	console.log('After timeout: ' + contexty.context.foo)
-	contexty.create.foo = 'x'
+	contexty.create().foo = 'x'
 	console.log('After creating child context: ' + contexty.context.foo)
 }
 
