@@ -1,5 +1,5 @@
 export default {
-	entry: './src/Contexty.js',
+	entry: './src/index.js',
 	external: ['async_hooks'],
 	interop: false,
 	sourceMap: true,

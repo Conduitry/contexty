@@ -37,6 +37,8 @@ This getter retrieves the context created by the appropriate asynchronously ance
 ## Example
 
 ```javascript
+let { Contexty } = require('contexty')
+
 let contexty = new Contexty()
 
 let counter = 0
