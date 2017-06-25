@@ -2,21 +2,22 @@ import { createHook, executionAsyncId } from 'async_hooks'
 
 let contexties = new Map()
 
-createHook({
-	init(asyncId, type, triggerAsyncId) {
-		for (let contexts of contexties.values()) {
-			contexts.set(asyncId, contexts.get(triggerAsyncId))
-		}
-	},
-	destroy(asyncId) {
-		for (let contexts of contexties.values()) {
-			contexts.delete(asyncId)
-		}
-	},
-}).enable()
-
 export default class Contexty {
 	constructor() {
+		if (contexties.size === 0) {
+			createHook({
+				init(asyncId, type, triggerAsyncId) {
+					for (let contexts of contexties.values()) {
+						contexts.set(asyncId, contexts.get(triggerAsyncId))
+					}
+				},
+				destroy(asyncId) {
+					for (let contexts of contexties.values()) {
+						contexts.delete(asyncId)
+					}
+				},
+			}).enable()
+		}
 		contexties.set(this, new Map())
 	}
 	get new() {
