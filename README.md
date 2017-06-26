@@ -4,7 +4,9 @@
 
 **Contexty** is a very simple implementation of a "thread-local storage"-esque concept for Node.js, based on asynchronous resources and `async_hooks`.
 
-Typical usage and motivation: At the beginning of handling an HTTP request, you can create a new context. Elsewhere in your code, you can retrieve the current context and get/set values on it. The context is preserved for the duration of that HTTP request, but is kept separate for different HTTP requests.
+## Motivation
+
+At the beginning of handling an HTTP request, you can create a new context. Elsewhere in your code, you can retrieve the current context object and get/set values on it. The context is preserved for the duration of that HTTP request, but is kept separate for different HTTP requests. This all happens without you having to pass the current context object around.
 
 ## Requirements
 
