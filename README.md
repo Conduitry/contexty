@@ -65,8 +65,10 @@ async function test() {
 
 function test2() {
 	console.log('After timeout: ' + contexty.context.foo)
-	contexty.create().foo = 'x'
-	console.log('After creating child context: ' + contexty.context.foo)
+	contexty.create()
+	console.log('In child context: ' + contexty.context.foo)
+	contexty.context.foo = 'x'
+	console.log('With overridden value: ' + contexty.context.foo)
 }
 
 for (let i = 0; i < 3; i++) {
@@ -91,11 +93,14 @@ After .then()ed promise: 1
 After .then()ed promise: 2
 After .then()ed promise: 3
 After timeout: 1
-After creating child context: x
+In child context: 1
+With overridden value: x
 After timeout: 2
-After creating child context: x
+In child context: 2
+With overridden value: x
 After timeout: 3
-After creating child context: x
+In child context: 3
+With overridden value: x
 Back in original context: 1
 Back in original context: 2
 Back in original context: 3
