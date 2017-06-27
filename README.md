@@ -10,7 +10,7 @@ At the beginning of handling an HTTP request, you can create a new context. Else
 
 ## Requirements
 
-A current nightly Node.js build, for now. My understanding is that the `async_hooks` features and fixes that this relies on will be released in Node.js 8.2.0. This section will be updated accordingly as Node.js versions are officially released.
+- [Node.js](https://nodejs.org/) 8.2+ (currently in [release candidate](https://nodejs.org/download/rc/) stage), or a [nightly build](https://nodejs.org/download/nightly/)
 
 ## Usage
 
