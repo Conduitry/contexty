@@ -13,8 +13,8 @@
 		"format": "prettier --write --use-tabs --no-semi --single-quote --trailing-comma es5 \"src/**/*.js\" \"*.js\""
 	},
 	"devDependencies": {
-		"eslint": "^4.1.0",
-		"prettier": "^1.4.4",
+		"eslint": "^4.1.1",
+		"prettier": "^1.5.2",
 		"rollup": "^0.43.0"
 	},
 	"repository": {
