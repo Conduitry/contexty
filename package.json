@@ -28,5 +28,6 @@
 	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/Conduitry/contexty/issues"
-	}
+	},
+	"homepage": "https://contexty.unwieldy.org"
 }
