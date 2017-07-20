@@ -17,6 +17,9 @@
 		"prettier": "^1.5.3",
 		"rollup": "^0.45.2"
 	},
+	"engines": {
+		"node": ">=8.2.0"
+	},
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/Conduitry/contexty.git"

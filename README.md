@@ -10,7 +10,7 @@ At the beginning of handling an HTTP request, you can create a new context. Else
 
 ## Requirements
 
-- [Node.js](https://nodejs.org/) 8.2+ (currently in [release candidate](https://nodejs.org/download/rc/) stage), or a [nightly build](https://nodejs.org/download/nightly/)
+- [Node.js](https://nodejs.org/) 8.2+
 
 ## Usage
 
