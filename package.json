@@ -8,14 +8,10 @@
 		"dist"
 	],
 	"scripts": {
-		"build": "rollup -c",
-		"lint": "eslint src rollup.config.js",
-		"format": "prettier --write --use-tabs --no-semi --single-quote --trailing-comma es5 \"src/**/*.js\" \"*.js\""
+		"build": "rollup -c"
 	},
 	"devDependencies": {
-		"eslint": "^4.2.0",
-		"prettier": "^1.5.3",
-		"rollup": "^0.45.2"
+		"rollup": "*"
 	},
 	"engines": {
 		"node": ">=8.2.0"
@@ -29,5 +25,5 @@
 	"bugs": {
 		"url": "https://github.com/Conduitry/contexty/issues"
 	},
-	"homepage": "https://contexty.unwieldy.org"
+	"homepage": "https://conduitry.io/contexty"
 }

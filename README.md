@@ -111,6 +111,6 @@ On event: 3
 
 ## License
 
-Copyright (c) 2017 Conduitry
+Copyright (c) 2017-2018 Conduitry
 
-- [MIT](https://github.com/Conduitry/contexty/blob/master/LICENSE)
+- [MIT](LICENSE)
